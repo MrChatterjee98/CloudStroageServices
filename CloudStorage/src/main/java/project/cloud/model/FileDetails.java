@@ -1,17 +1,20 @@
 package project.cloud.model;
 
-import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor @ToString
+@Getter @Setter @AllArgsConstructor @NoArgsConstructor 
 public class FileDetails {
+	
 	private String fileName;
-	String fileType;
-	String size;
-	private Date createdAt;
+	private String fileType;
+	private String size;
+	private String createdAt;
+	@Override
+	public String toString() {
+		return String.format("{filename:\"%s\",filetype:\"%s\",size:\"%s\",createdat:\"%s\"}",this.fileName,this.fileType,this.size,this.createdAt);
+	}
 }

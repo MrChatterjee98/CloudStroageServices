@@ -1,9 +1,10 @@
-package project.cloud.util;
+package project.cloud.service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketException;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,22 +24,22 @@ import project.cloud.repo.FileStroageRepo;
 @PropertySource(value = "classpath:ftpconnection.properties")
 public class FileStorageService implements FileStroageRepo {
 
-	@Value("${hostname}")
-	private String FTP_HOST_NAME;
-	@Value("${portnumber}")
-	private int FTP_PORT_NUM;
-	@Value("${ftpusername}")
-	private  String FTP_USERNAME ;
-	@Value("${ftppassword}")
-	private String FTP_PASSWORD ;
-	@Value("${workingdir}")
-	private  String WORKING_DIR ;
+	private final String FTP_HOST_NAME;
+	private final int FTP_PORT_NUM;
+	private final String FTP_USERNAME;
+	private final String FTP_PASSWORD;
+	private final String WORKING_DIR;
 	private FTPClient client = null;
 	private String base_dir;
 
-	public FileStorageService() {
-		// TODO Auto-generated constructor stub
-
+	public FileStorageService(@Value("${hostname}") String hostname, @Value("${portnumber}") int portnumber,
+			@Value("${ftpusername}") String username, @Value("${ftppassword}") String password,
+			@Value("${workingdir}") String dir) {
+		this.FTP_HOST_NAME = hostname;
+		this.FTP_PORT_NUM = portnumber;
+		this.FTP_USERNAME = username;
+		this.FTP_PASSWORD = password;
+		this.WORKING_DIR = dir;
 	}
 
 	@Override
@@ -67,10 +68,11 @@ public class FileStorageService implements FileStroageRepo {
 	@Override
 	public ArrayList<FileDetails> getFilesList() throws IOException {
 		ArrayList<FileDetails> list = new ArrayList<FileDetails>();
+		SimpleDateFormat dateFormatter= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		FTPFile[] files = client.listFiles();
 		for (FTPFile file : files)
 			list.add(new FileDetails(file.getName(), file.getType() != FTPFile.DIRECTORY_TYPE ? "file" : "folder",
-					file.getSize() + " Bytes", new Date(file.getTimestamp().getTimeInMillis())));
+					file.getSize() + " Bytes", dateFormatter.format(new Date(file.getTimestamp().getTimeInMillis()))));
 		return list;
 	}
 
@@ -97,6 +99,7 @@ public class FileStorageService implements FileStroageRepo {
 		
 		client.changeWorkingDirectory(ext);
 		boolean res = client.storeFile(filename, in);
+		
 		client.changeToParentDirectory();
 		return res;
 	}
@@ -104,7 +107,7 @@ public class FileStorageService implements FileStroageRepo {
 	@Override
 	public boolean readFile(String path, HttpServletResponse response) throws IOException {
 		String folder = path.split("\\.")[1];
-		client.changeWorkingDirectory(base_dir+"/"+folder.toUpperCase());
+		client.changeWorkingDirectory(base_dir + "/" + folder.toUpperCase());
 		boolean fileFound = false;
 		FTPFile[] files = client.listFiles();
 		for (FTPFile file : files) {
@@ -120,7 +123,7 @@ public class FileStorageService implements FileStroageRepo {
 	@Override
 	public boolean getFileFromFTP(String path, HttpServletResponse response) throws IOException {
 		String folder = path.split("\\.")[1];
-		client.changeWorkingDirectory(base_dir+"/"+folder.toUpperCase());
+		client.changeWorkingDirectory(base_dir + "/" + folder.toUpperCase());
 		FTPFile[] files = client.listFiles();
 		boolean fileFound = false;
 		for (FTPFile file : files) {
@@ -137,17 +140,17 @@ public class FileStorageService implements FileStroageRepo {
 	@Override
 	public boolean removeFile(String path) throws IOException {
 		String folder = path.split("\\.")[1];
-		client.changeWorkingDirectory(base_dir+"/"+folder.toUpperCase());
+		client.changeWorkingDirectory(base_dir + "/" + folder.toUpperCase());
 		boolean ret = client.deleteFile(path);
 		client.changeWorkingDirectory(base_dir);
 		return ret;
-		
+
 	}
 
 	@Override
 	public boolean updateFile(String path, String newName) throws IOException {
 		String folder = path.split("\\.")[1];
-		client.changeWorkingDirectory(base_dir+"/"+folder.toUpperCase());
+		client.changeWorkingDirectory(base_dir + "/" + folder.toUpperCase());
 		FTPFile[] files = client.listFiles();
 		for (FTPFile file : files) {
 			if (file.getName().equalsIgnoreCase(path)) {
