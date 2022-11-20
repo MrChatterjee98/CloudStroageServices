@@ -21,7 +21,6 @@ import project.cloud.model.FileDetails;
 import project.cloud.repo.FileStroageRepo;
 
 @Service
-@PropertySource(value = "classpath:ftpconnection.properties")
 public class FileStorageService implements FileStroageRepo {
 
 	private final String FTP_HOST_NAME;
