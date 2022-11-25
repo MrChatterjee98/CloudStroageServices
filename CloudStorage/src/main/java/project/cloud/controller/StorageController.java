@@ -9,6 +9,7 @@ import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,6 @@ import project.cloud.service.FileStorageService;
 import project.cloud.util.KafkaProducerUtil;
 
 @RestController
-@RequestMapping("/file/")
 public class StorageController {
 	@Autowired
 	FileStorageService fileStorage;
@@ -35,11 +35,12 @@ public class StorageController {
 	KafkaProducerUtil producerUtil;
 	@Autowired
 	Environment env;
-	
+
 
 	@PostConstruct
 	public void uponConstruct() throws IOException, Exception {
 		fileStorage.openConnection();
+
 	}
 
 	@PreDestroy
@@ -51,7 +52,6 @@ public class StorageController {
 
 	@GetMapping("/")
 	public ArrayList<FileDetails> getFiles() throws IOException {
-
 		return fileStorage.getFilesList();
 	}
 

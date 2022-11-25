@@ -19,13 +19,19 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>reader</groupId>
-			<artifactId>reader</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20220320</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<version>3.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -59,9 +65,27 @@
 			<artifactId>spring-cloud-starter-config</artifactId>
 			<version>3.1.5</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-netflix-eureka-client</artifactId>
+			<version>3.1.4</version>
+		</dependency>
 
 
 	</dependencies>
+	<dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-dependencies</artifactId>
+			<version>2021.0.5</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+
+	</dependencies>
+</dependencyManagement>
+
 
 	<build>
 		<plugins>
