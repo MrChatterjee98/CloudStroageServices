@@ -34,6 +34,6 @@ and the information is stored in the db
 
 
 #### TODO:
-Phase 1: basic backend design.(completed)
-Phase 2: basic frontedn design .
-Phase 3: authentication using spring cloud.
+* Phase 1: basic backend design.(completed)
+* Phase 2: basic frontedn design .
+* Phase 3: authentication using spring cloud.
