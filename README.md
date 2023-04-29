@@ -23,17 +23,17 @@ sends the uploaded files to the server.
 e.g : text files are stored in TXT folder ,JSON files in JSON folder etc.
 
 ### FIle Storage DB:
-- Mongo db is used to store the files infomration such as file name, creation date, download count.
+- Mongo db is used to store the file information such as file name, creation date, downloads count.
 - Eeach time a file is uploded an event is published to the kafka bus by the **Cloud Storage** service which is consume by the **File Storage** service
 and the information is stored in the db
 
 ### Functionalities:
-- Storing files
+- storing files
 - previewing files
 - downloading files
 
 
 #### TODO:
-* Phase 1: basic backend design.(completed)
-* Phase 2: basic frontedn design .
-* Phase 3: authentication using spring cloud.
+* Phase 1: basic backend design(completed)
+* Phase 2: basic frontden design
+* Phase 3: authentication using spring cloud
