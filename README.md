@@ -1,6 +1,5 @@
 # A FTP based cloud sotrage system
 ## A microservices based file storage system where file can be stored and retrived from the remote server.
-## Architecture 
 ![image](https://user-images.githubusercontent.com/59931878/235321025-c88af8a6-689c-4baa-9c98-b150aeccc8ed.png)
 
 
